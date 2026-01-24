@@ -15,15 +15,35 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // why this is generic? to custmize or extend
-builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();//24hours
+//builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+//    .AddEntityFrameworkStores<ApplicationDbContext>()
+//    .AddDefaultTokenProviders();//24hours
+
+// Register ASP.NET Core Identity Services using AddIdentity
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(
+        options =>
+        {
+            // Password settings
+            options.Password.RequireDigit = true;               // Must include digits
+            options.Password.RequiredLength = 8;                // Minimum length 8
+            options.Password.RequireNonAlphanumeric = true;     // Must include special characters
+            options.Password.RequireUppercase = true;           // Must include uppercase letters
+            options.Password.RequireLowercase = true;           // Must include lowercase letters
+            options.Password.RequiredUniqueChars = 4;           // At least 4 unique characters
+        })
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
 //By default, ASP.NET Core Identity’s email confirmation token (and other security tokens)
 //are valid for 1 day (24 hours).
 // Set token valid for 30 minutes
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
 {
     options.TokenLifespan = TimeSpan.FromMinutes(30);
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    // This sets the path to the login page users are redirected to if unauthenticated
+    options.LoginPath = "/Account/Login";  // Change if your login page is elsewhere
 });
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IEmailService, EmailService>();

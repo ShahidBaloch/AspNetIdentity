@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace AspNetIdentity.ViewModels
 {
@@ -15,6 +16,7 @@ namespace AspNetIdentity.ViewModels
 
         [Required(ErrorMessage = "Email Id is Required")]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [Remote(action: "IsEmailAvailable", controller: "RemoteValidation")]
         public string Email { get; set; } = null!;
 
         [DataType(DataType.Date)]

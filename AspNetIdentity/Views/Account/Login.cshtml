@@ -23,7 +23,6 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
-
             @if (!ViewData.ModelState.IsValid)
             {
                 <div class="alert alert-danger alert-dismissible fade show small text-center" role="alert">
@@ -39,6 +38,7 @@
             }
 
             <form asp-action="Login" method="post" novalidate>
+                <input type="hidden" name="ReturnUrl" value="@Model.ReturnURL" />
                 <div class="mb-3">
                     <label asp-for="Email" class="form-label fw-semibold text-primary"></label>
                     <input asp-for="Email" class="form-control" placeholder="Enter your Email Address" autocomplete="username" />
@@ -63,7 +63,6 @@
                 </p>
             </form>
         </div>
-
         <!-- Right: External Authentication -->
         <div class="col-md-6 py-4 px-4 d-flex flex-column justify-content-center align-items-center bg-white">
             <div class="w-100" style="max-width: 280px;">

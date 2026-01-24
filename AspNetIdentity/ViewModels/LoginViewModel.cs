@@ -14,5 +14,6 @@ namespace AspNetIdentity.ViewModels
 
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
+        public string? ReturnURL { get; set; }
     }
 }

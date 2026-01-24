@@ -75,30 +75,43 @@ namespace AspNetIdentity.Controllers
         }
         // GET: /Account/Login
         [HttpGet]
-        public IActionResult Login()
+        public IActionResult Login(string? ReturnUrl = null)
         {
-            return View();
+            LoginViewModel model = new LoginViewModel()
+            {
+                ReturnURL = ReturnUrl
+            };
+            //ViewData["ReturnUrl"] = ReturnUrl;
+            return View(model);
         }
         // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string? returnUrl = null)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             try
             {
                 if (!ModelState.IsValid)
                     return View(model);
+
                 var result = await _accountService.LoginUserAsync(model);
+
                 if (result.Succeeded)
                 {
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                        return Redirect(returnUrl);
-                    return RedirectToAction("Profile", "Account"); ;
+                    // Redirect back to original page if ReturnUrl exists and is local
+                    if (!string.IsNullOrEmpty(model.ReturnURL) && Url.IsLocalUrl(model.ReturnURL))
+                        return Redirect(model.ReturnURL);
+
+                    // Otherwise, redirect to a default page (like user profile)
+                    return RedirectToAction("Profile", "Account");
                 }
+
+                // Handle login failure (e.g., invalid credentials or unconfirmed email)
                 if (result.IsNotAllowed)
                     ModelState.AddModelError("", "Email is not confirmed yet.");
                 else
                     ModelState.AddModelError("", "Invalid login attempt.");
+
                 return View(model);
             }
             catch (Exception ex)
