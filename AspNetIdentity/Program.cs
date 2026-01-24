@@ -1,5 +1,6 @@
 using AspNetIdentity.Data;
 using AspNetIdentity.Models;
+using AspNetIdentity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,17 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 // why this is generic? to custmize or extend
 builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();//24hours
+//By default, ASP.NET Core Identity’s email confirmation token (and other security tokens)
+//are valid for 1 day (24 hours).
+// Set token valid for 30 minutes
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromMinutes(30);
+});
+builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

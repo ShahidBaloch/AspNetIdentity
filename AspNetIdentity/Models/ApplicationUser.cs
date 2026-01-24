@@ -6,7 +6,7 @@ namespace AspNetIdentity.Models
     public class ApplicationUser: IdentityUser<Guid>
     {
         public string FirstName { get; set; } = null!;
-        public string? Lastname { get; set; } 
+        public string? LastName { get; set; } 
         public DateTime? LastLogin { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public bool IsActive { get; set; }
