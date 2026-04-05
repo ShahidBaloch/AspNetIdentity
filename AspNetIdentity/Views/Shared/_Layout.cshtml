@@ -35,10 +35,14 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " asp-controller="Home" asp-action="NonSecureMethod">Non Secure</a>
+                        <a class="nav-link" asp-controller="Home" asp-action="NonSecureMethod">Non Secure</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Roles" asp-action="Index">Roles</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Users" asp-action="Index">Users</a>
                     </li>
                 </ul>
 
@@ -47,7 +51,7 @@
                     {
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                               data-bs-toggle="dropdown" aria-expanded="false">
+                                   data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle me-1"></i>
                                 Hello, @User.Identity.Name
                             </a>
