@@ -1,5 +1,6 @@
 ﻿using AspNetIdentity.Services;
 using AspNetIdentity.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -179,6 +180,14 @@ namespace AspNetIdentity.Controllers
                 ModelState.AddModelError("", "An unexpected error occurred. Please try again later.");
                 return View(model);
             }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult AccessDenied(string? returnUrl = null)
+        {
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
         }
     }
 }
